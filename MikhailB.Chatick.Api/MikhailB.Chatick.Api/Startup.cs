@@ -13,6 +13,9 @@ using System;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using MikhailB.Chatick.BusinesLogic.Hubs;
+using MikhailB.Chatick.Contracts.Interfaces;
+using MikhailB.Chatick.DataAccess.Chat.Repositories;
+using MikhailB.Chatick.BusinesLogic.Services;
 
 namespace MikhailB.Chatick.Api
 {
@@ -28,8 +31,11 @@ namespace MikhailB.Chatick.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // ASP.NET
             services.AddControllersWithViews();
+            services.AddSignalR();
 
+            // DB
             services.AddDbContext<ChatContext>(
                 options => options
                     .UseSqlite($"Data Source={Environment.CurrentDirectory}{System.IO.Path.DirectorySeparatorChar}chat.db")
@@ -37,13 +43,11 @@ namespace MikhailB.Chatick.Api
                     .LogTo(Log.Logger.Error, LogLevel.Error)
                 );
 
-            services.AddSignalR();
+            // REPOSITORIES
+            services.AddScoped<ITokenRepository, TokenRepository>();
 
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/build";
-            });
+            // SERVICES
+            services.AddScoped<ITokenService, TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +61,7 @@ namespace MikhailB.Chatick.Api
                 using (var scope = app.ApplicationServices.CreateScope())
                     using (var context = scope.ServiceProvider.GetService<ChatContext>())
                     {
-                        //context.Database.EnsureDeleted();
+                        context.Database.EnsureDeleted();
                         context.Database.EnsureCreated();
                     }
             }
@@ -72,8 +76,6 @@ namespace MikhailB.Chatick.Api
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            //app.UseWebSockets(new WebSocketOptions { KeepAliveInterval = System.TimeSpan.FromMinutes(1) });
-
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -82,16 +84,6 @@ namespace MikhailB.Chatick.Api
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapHub<ChatHub>("/chathub");
-            });
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
             });
         }
     }
