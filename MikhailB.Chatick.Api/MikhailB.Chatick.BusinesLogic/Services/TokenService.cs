@@ -42,7 +42,6 @@ namespace MikhailB.Chatick.BusinesLogic.Services
         public async Task<Token> RefreshUserToken(Guid uid)
         {
             Token token;
-
             try
             {
                 token = _repository.Get(uid);

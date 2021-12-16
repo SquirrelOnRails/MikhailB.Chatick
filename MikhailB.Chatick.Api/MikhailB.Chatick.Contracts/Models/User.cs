@@ -56,6 +56,6 @@ namespace MikhailB.Chatick.Contracts.Models
         /// <summary>
         /// (virtaul) Связи пользователя с диалогами
         /// </summary>
-        public virtual ICollection<UserDialog> UserDialogs { get; set; }
+        public virtual ICollection<UserDialog>? UserDialogs { get; set; }
     }
 }

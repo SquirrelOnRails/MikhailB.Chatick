@@ -22,6 +22,8 @@ namespace MikhailB.Chatick.DataAccess.Chat.Configurations
             builder.Property(e => e.FirstName).IsRequired(true);
             builder.Property(e => e.SecondName).IsRequired(true);
             builder.Property(e => e.IsEnabled).IsRequired(false).HasDefaultValue(true);
+
+            builder.HasIndex(e => e.Username).IsUnique(true);
         }
     }
 }

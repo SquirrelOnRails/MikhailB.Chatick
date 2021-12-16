@@ -45,9 +45,11 @@ namespace MikhailB.Chatick.Api
 
             // REPOSITORIES
             services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // SERVICES
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
