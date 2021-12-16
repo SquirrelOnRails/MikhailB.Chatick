@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Settings from '../../Settings/Settings';
+import IToken from '../../Interfaces/IToken';
+import { useNavigate } from "react-router-dom";
 import './style.css';
 
 interface ILoginUser { usernameCred: string, passwordCred: string }
 const loginUser = async ({ usernameCred, passwordCred }: ILoginUser) => {
-  //return { token: 'fakeToken' }
+  let token:IToken = { Value: "test123", ValidTo: new Date("2012.12.12"), UID: "FAKEUID" };
+  return token;
   // axios
-  return fetch(`http://${Settings.server.http.host}:${Settings.server.http.port}}/api/user/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username: usernameCred, password: passwordCred })
-  })
-    .then(data => data.json())
+  // return fetch(`http://${Settings.server.http.host}:${Settings.server.http.port}}/api/user/login`, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({ username: usernameCred, password: passwordCred })
+  // })
+  //   .then(data => data.json())
 }
 
-interface ILogin { setToken: (token: string) => void }
-const Login : React.FC<ILogin> = ({ setToken }) => {
+interface ILogin { setToken: (token: IToken) => void }
+const Login:React.FC<ILogin> = ({ setToken }) => {
+  let navigate = useNavigate();
+
   const [username, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -28,7 +32,8 @@ const Login : React.FC<ILogin> = ({ setToken }) => {
       usernameCred: username,
       passwordCred: password
     });
-    setToken(tokenData.token);
+    setToken(tokenData);
+    navigate('/');
   }
 
   return (

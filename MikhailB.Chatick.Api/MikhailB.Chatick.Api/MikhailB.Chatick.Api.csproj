@@ -30,7 +30,6 @@
     <ProjectReference Include="..\MikhailB.Chatick.BusinesLogic\MikhailB.Chatick.BusinesLogic.csproj" />
     <ProjectReference Include="..\MikhailB.Chatick.Contracts\MikhailB.Chatick.Contracts.csproj" />
     <ProjectReference Include="..\MikhailB.Chatick.DataAccess\MikhailB.Chatick.DataAccess.csproj" />
-    <ProjectReference Include="..\MikhailB.Chatick.Interfaces\MikhailB.Chatick.Interfaces.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

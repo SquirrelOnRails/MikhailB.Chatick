@@ -1,8 +1,12 @@
 import React from 'react';
+import Logout from '../Logout/Logout';
 
 function Dashboard() {
   return(
-    <h2>Dashboard</h2>
+    <div>
+      <Logout />
+      <h2>Dashboard</h2>
+    </div>
   );
 }
 
