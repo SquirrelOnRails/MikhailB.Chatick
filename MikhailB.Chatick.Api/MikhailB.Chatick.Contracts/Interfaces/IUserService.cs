@@ -9,7 +9,7 @@ namespace MikhailB.Chatick.Contracts.Interfaces
 {
     public interface IUserService
     {
-        User SearchByUsername(string username);
+        User SearchByEmail(string username);
         Task<User> RegisterUser(User newUser);
     }
 }

@@ -22,10 +22,10 @@ namespace MikhailB.Chatick.Api.Controllers
         public UserController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
-            _tokenService = tokenService;
+            //_tokenService = tokenService;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Авторизация пользователя
         /// </summary>
         /// <param name="credentials">Данные авторизации пользователя</param>
@@ -36,7 +36,7 @@ namespace MikhailB.Chatick.Api.Controllers
             User user = null;
             try
             {
-                user = _userService.SearchByUsername(credentials.Username);
+                user = _userService.SearchByEmail(credentials.Email);
             }
             catch (Exception e)
             {
@@ -66,6 +66,6 @@ namespace MikhailB.Chatick.Api.Controllers
                 _log.Error(e, errMsg);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{errMsg}: {e.Message}");
             }
-        }
+        }*/
     }
 }

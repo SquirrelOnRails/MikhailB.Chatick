@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 
 namespace MikhailB.Chatick.Contracts.Dto
 {
-    /// <summary>
-    /// Данные авторизации пользователя
-    /// </summary>
-    public class LoginCredentialsDto
+    public class RegistrationCredentialsDto : LoginCredentialsDto
     {
+        /// <summary>
+        /// Логин
+        /// </summary>
+        [Required]
+        public string Username { get; set; }
+        
+        /// <summary>
+        /// Почтовый адрес
+        /// </summary>
         [Required]
         [EmailAddress]
         public string Email { get; set; }

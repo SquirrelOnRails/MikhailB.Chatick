@@ -41,20 +41,20 @@ namespace MikhailB.Chatick.BusinesLogic.Services
         }
 
         /// <summary>
-        /// Поиск пользователя по Username
+        /// Поиск пользователя по Email
         /// </summary>
-        /// <param name="username">Логин пользователя</param>
+        /// <param name="email">Email пользователя</param>
         /// <returns>Пользователь</returns>
-        public User SearchByUsername(string username)
+        public User SearchByEmail(string email)
         {
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(email))
                 return null;
 
             User result = null;
 
             try
             {
-                result = _repository.Get(username);
+                result = _repository.Get(email);
             }
             catch (Exception e)
             {
