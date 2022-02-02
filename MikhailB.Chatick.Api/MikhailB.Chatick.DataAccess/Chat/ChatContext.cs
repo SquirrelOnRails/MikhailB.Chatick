@@ -18,19 +18,19 @@ namespace MikhailB.Chatick.DataAccess.Chat
         { }
 
         public DbSet<ChatMessage> ChatMessages;
-        public DbSet<User> Users;
+        //public DbSet<User> Users;
         public DbSet<Dialog> Dialogs;
         public DbSet<UserDialog> UserDialogs; // Dialogs
-        public DbSet<Token> Tokens;
+        //public DbSet<Token> Tokens;
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.HasDefaultSchema("chat");
 
             mb.ApplyConfiguration(new ChatMessageConfiguration());
-            mb.ApplyConfiguration(new UserConfiguration());
+            //mb.ApplyConfiguration(new UserConfiguration());
             mb.ApplyConfiguration(new DialogConfiguration());
-            mb.ApplyConfiguration(new TokenConfiguration());
+            //mb.ApplyConfiguration(new TokenConfiguration());
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder ob){}
