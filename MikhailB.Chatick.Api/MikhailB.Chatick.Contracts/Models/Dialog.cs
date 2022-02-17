@@ -52,21 +52,21 @@ namespace MikhailB.Chatick.Contracts.Models
         /// <summary>
         /// (virtual) Инициатор блокировки диалога
         /// </summary>
-        public virtual User? BlockedByUser { get; set; }
+        public virtual User BlockedByUser { get; set; }
 
         /// <summary>
         /// (virtual) Участники диалога
         /// </summary>
-        public virtual ICollection<User>? Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
 
         /// <summary>
         /// (virtual) Связь пользователей и диалога
         /// </summary>
-        public virtual ICollection<UserDialog>? UserDialogs { get; set; }
+        public virtual ICollection<UserDialog> UserDialogs { get; set; }
 
         /// <summary>
         /// (virtual) Сообщения в текущем диалоге
         /// </summary>
-        public virtual ICollection<ChatMessage>? Messages { get; set; }
+        public virtual ICollection<ChatMessage> Messages { get; set; }
     }
 }

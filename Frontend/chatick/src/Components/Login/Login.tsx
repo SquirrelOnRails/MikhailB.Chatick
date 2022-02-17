@@ -4,32 +4,33 @@ import IToken from '../../Interfaces/IToken';
 import { useNavigate } from "react-router-dom";
 import './style.css';
 
-interface ILoginUser { usernameCred: string, passwordCred: string }
-const loginUser = async ({ usernameCred, passwordCred }: ILoginUser) => {
-  let token:IToken = { Value: "test123", ValidTo: new Date("2012.12.12"), UID: "FAKEUID" };
-  return token;
+interface ILoginUser { emailCred: string, passwordCred: string }
+const loginUser = async ({ emailCred, passwordCred }: ILoginUser) => {
+  //let token:IToken = { Value: "test123", ValidTo: new Date("2012.12.12"), UID: "FAKEUID" };
+  //return token;
+  
   // axios
-  // return fetch(`http://${Settings.server.http.host}:${Settings.server.http.port}}/api/user/login`, {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify({ username: usernameCred, password: passwordCred })
-  // })
-  //   .then(data => data.json())
+  return fetch(`http://${Settings.server.http.host}:${Settings.server.http.port}}/api/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: emailCred, password: passwordCred })
+  })
+    .then(data => data.json())
 }
 
 interface ILogin { setToken: (token: IToken) => void }
 const Login:React.FC<ILogin> = ({ setToken }) => {
   let navigate = useNavigate();
 
-  const [username, setUserName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const onLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const tokenData = await loginUser({ 
-      usernameCred: username,
+      emailCred: email,
       passwordCred: password
     });
     setToken(tokenData);
@@ -41,8 +42,8 @@ const Login:React.FC<ILogin> = ({ setToken }) => {
       <h1>Please Log In</h1>
       <form onSubmit={onLoginSubmit}>
         <label>
-          <p>Username</p>
-          <input type="text" onChange={e => setUserName(e.target.value)} />
+          <p>Email</p>
+          <input type="text" onChange={e => setEmail(e.target.value)} />
         </label>
         <label>
           <p>Password</p>

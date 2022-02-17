@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MikhailB.Chatick.Contracts.Dto;
-using MikhailB.Chatick.Contracts.Interfaces;
+//using MikhailB.Chatick.Contracts.Interfaces;
 using MikhailB.Chatick.Contracts.Models;
 using Serilog;
 using System;
@@ -15,17 +15,17 @@ namespace MikhailB.Chatick.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly ILogger _log = Log.ForContext<UserController>();
+        /*private readonly ILogger _log = Log.ForContext<UserController>();
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
 
         public UserController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
-            //_tokenService = tokenService;
+            _tokenService = tokenService;
         }
 
-        /*/// <summary>
+        /// <summary>
         /// Авторизация пользователя
         /// </summary>
         /// <param name="credentials">Данные авторизации пользователя</param>

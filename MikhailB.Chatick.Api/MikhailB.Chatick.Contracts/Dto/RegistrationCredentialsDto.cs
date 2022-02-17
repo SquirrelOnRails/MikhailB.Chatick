@@ -14,18 +14,5 @@ namespace MikhailB.Chatick.Contracts.Dto
         /// </summary>
         [Required]
         public string Username { get; set; }
-        
-        /// <summary>
-        /// Почтовый адрес
-        /// </summary>
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Пароль
-        /// </summary>
-        [Required]
-        public string Password { get; set; }
     }
 }

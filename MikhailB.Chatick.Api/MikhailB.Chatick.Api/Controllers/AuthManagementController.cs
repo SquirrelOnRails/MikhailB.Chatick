@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using MikhailB.Chatick.Api.Classes;
 using MikhailB.Chatick.Api.Configuration;
 using MikhailB.Chatick.Contracts.Dto;
-//using MikhailB.Chatick.Contracts.Models;
+using MikhailB.Chatick.Contracts.Models;
 
 namespace MikhailB.Chatick.Api.Controllers
 {
@@ -20,11 +20,11 @@ namespace MikhailB.Chatick.Api.Controllers
     [ApiController]
     public class AuthManagementController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly JwtConfig _jwtConfig;
 
         public AuthManagementController(
-            UserManager<IdentityUser> userManager,
+            UserManager<AppUser> userManager,
             IOptionsMonitor<JwtConfig> optionsMonitor)
         {
             _userManager = userManager;
@@ -49,7 +49,7 @@ namespace MikhailB.Chatick.Api.Controllers
                     });
                 }
 
-                var newUser = new IdentityUser() { Email = user.Email, UserName = user.Username};
+                var newUser = new AppUser() { Email = user.Email, UserName = user.Username};
                 var isCreated = await _userManager.CreateAsync(newUser, user.Password);
                 if(isCreated.Succeeded)
                 {
@@ -119,7 +119,7 @@ namespace MikhailB.Chatick.Api.Controllers
             });
         }
 
-        private string GenerateJwtToken(IdentityUser user)
+        private string GenerateJwtToken(AppUser user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 

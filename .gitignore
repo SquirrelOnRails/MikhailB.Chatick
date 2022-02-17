@@ -369,3 +369,6 @@ MigrationBackup/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+MikhailB.Chatick.Api/MikhailB.Chatick.Api/chat.db
+MikhailB.Chatick.Api/MikhailB.Chatick.Api/chat.db-shm
+MikhailB.Chatick.Api/MikhailB.Chatick.Api/chat.db-wal

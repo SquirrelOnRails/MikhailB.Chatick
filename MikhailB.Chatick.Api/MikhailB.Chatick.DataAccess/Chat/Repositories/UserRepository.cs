@@ -1,4 +1,4 @@
-﻿using MikhailB.Chatick.Contracts.Interfaces;
+﻿//using MikhailB.Chatick.Contracts.Interfaces;
 using MikhailB.Chatick.Contracts.Models;
 using Serilog;
 using System;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MikhailB.Chatick.DataAccess.Chat.Repositories
 {
-    public class UserRepository : IUserRepository
+    /*public class UserRepository : IUserRepository
     {
         private readonly ILogger _log = Log.ForContext<UserRepository>();
         private readonly ChatContext _dbContext;
@@ -93,5 +93,5 @@ namespace MikhailB.Chatick.DataAccess.Chat.Repositories
                 return null;
             }
         }
-    }
+    }*/
 }

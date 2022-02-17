@@ -1,27 +1,19 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Sqlite;
 using MikhailB.Chatick.DataAccess.Chat;
-using System;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using MikhailB.Chatick.BusinesLogic.Hubs;
-using MikhailB.Chatick.Contracts.Interfaces;
-using MikhailB.Chatick.DataAccess.Chat.Repositories;
-using MikhailB.Chatick.BusinesLogic.Services;
 using MikhailB.Chatick.Api.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
+using MikhailB.Chatick.Contracts.Models;
 
 namespace MikhailB.Chatick.Api
 {
@@ -61,8 +53,14 @@ namespace MikhailB.Chatick.Api
             });
 
             // IDENTITY
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                        .AddEntityFrameworkStores<ChatContext>();
+            services.AddDefaultIdentity<AppUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false; // TODO
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            })
+                .AddEntityFrameworkStores<ChatContext>();
 
             // ASP.NET
             services.AddControllersWithViews();
@@ -77,12 +75,8 @@ namespace MikhailB.Chatick.Api
                 );
 
             // REPOSITORIES
-            services.AddScoped<ITokenRepository, TokenRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
 
             // SERVICES
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUserService, UserService>();
 
             // SWAGGER
             services.AddSwaggerGen(c =>
@@ -120,7 +114,6 @@ namespace MikhailB.Chatick.Api
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
 
             app.UseRouting();
 

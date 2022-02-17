@@ -51,11 +51,11 @@ namespace MikhailB.Chatick.Contracts.Models
         /// <summary>
         /// (virtual) Диалоги пользователя
         /// </summary>
-        public virtual ICollection<Dialog>? Dialogs { get; set; }
+        public virtual ICollection<Dialog> Dialogs { get; set; }
 
         /// <summary>
         /// (virtaul) Связи пользователя с диалогами
         /// </summary>
-        public virtual ICollection<UserDialog>? UserDialogs { get; set; }
+        public virtual ICollection<UserDialog> UserDialogs { get; set; }
     }
 }
