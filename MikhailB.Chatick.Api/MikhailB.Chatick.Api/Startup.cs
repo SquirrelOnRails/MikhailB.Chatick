@@ -65,6 +65,12 @@ namespace MikhailB.Chatick.Api
             // ASP.NET
             services.AddControllersWithViews();
             services.AddSignalR();
+            services.AddCors(options => options.AddDefaultPolicy(builder => 
+            { 
+                builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            }));
 
             // DB
             services.AddDbContext<ChatContext>(
@@ -116,6 +122,7 @@ namespace MikhailB.Chatick.Api
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
