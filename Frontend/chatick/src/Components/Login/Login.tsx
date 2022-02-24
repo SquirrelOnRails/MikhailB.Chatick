@@ -37,6 +37,10 @@ const Login:React.FC<ILogin> = ({ setToken }) => {
     navigate('/');
   }
 
+  const handleRegister = () => {
+    navigate("/register");
+  }
+
   return (
     <div className="login-wrapper">
       <h1>Please Log In</h1>
@@ -51,6 +55,9 @@ const Login:React.FC<ILogin> = ({ setToken }) => {
         </label>
         <div>
           <button type="submit">Submit</button>
+        </div>
+        <div>
+          <button type="button" onClick={handleRegister}>Register new account</button>
         </div>
       </form>
     </div>
