@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Settings from '../../Settings/Settings';
 import IToken from '../../Interfaces/IToken';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
 
-interface IRegisterUser { usernameCred: string, emailCred: string, passwordCred: string }
-const registerUser = async ({ usernameCred, emailCred, passwordCred }: IRegisterUser) => {
-  return fetch(`http://${Settings.server.http.host}:${Settings.server.http.port}}/api/auth/Register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username: usernameCred, email: emailCred, password: passwordCred })
-  })
-    .then(data => data.json())
+interface IRegisterUser {
+  usernameCred: string;
+  emailCred: string;
+  passwordCred: string;
 }
+const registerUser = async ({
+  usernameCred,
+  emailCred,
+  passwordCred,
+}: IRegisterUser) => {
+  return fetch(
+    `http://${Settings.server.http.host}:${Settings.server.http.port}}/api/auth/Register`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: usernameCred,
+        email: emailCred,
+        password: passwordCred,
+      }),
+    }
+  ).then(data => data.json());
+};
 
-interface IRegister { setToken: (token: IToken) => void }
-const Register:React.FC<IRegister> = ({ setToken }) => {
-  let navigate = useNavigate();
+interface IRegister {
+  setToken: (token: IToken) => void;
+}
+const Register: React.FC<IRegister> = ({setToken}) => {
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -25,18 +41,18 @@ const Register:React.FC<IRegister> = ({ setToken }) => {
 
   const onRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const tokenData = await registerUser({ 
+    const tokenData = await registerUser({
       usernameCred: username,
       emailCred: email,
-      passwordCred: password
+      passwordCred: password,
     });
     setToken(tokenData);
     navigate('/');
-  }
+  };
 
   const handleLogin = () => {
-    navigate("/login");
-  }
+    navigate('/login');
+  };
 
   return (
     <div className="login-wrapper">
@@ -58,11 +74,13 @@ const Register:React.FC<IRegister> = ({ setToken }) => {
           <button type="submit">Submit</button>
         </div>
         <div>
-          <button type="button" onClick={handleLogin}>I have an account</button>
+          <button type="button" onClick={handleLogin}>
+            I have an account
+          </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default Register;

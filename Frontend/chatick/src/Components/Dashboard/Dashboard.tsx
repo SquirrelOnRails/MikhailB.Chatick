@@ -2,7 +2,7 @@ import React from 'react';
 import Logout from '../Logout/Logout';
 
 function Dashboard() {
-  return(
+  return (
     <div>
       <Logout />
       <h2>Dashboard</h2>

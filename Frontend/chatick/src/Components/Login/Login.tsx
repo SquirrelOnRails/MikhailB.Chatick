@@ -1,45 +1,52 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Settings from '../../Settings/Settings';
 import IToken from '../../Interfaces/IToken';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
 import './style.css';
 
-interface ILoginUser { emailCred: string, passwordCred: string }
-const loginUser = async ({ emailCred, passwordCred }: ILoginUser) => {
+interface ILoginUser {
+  emailCred: string;
+  passwordCred: string;
+}
+const loginUser = async ({emailCred, passwordCred}: ILoginUser) => {
   //let token:IToken = { Value: "test123", ValidTo: new Date("2012.12.12"), UID: "FAKEUID" };
   //return token;
-  
-  // axios
-  return fetch(`http://${Settings.server.http.host}:${Settings.server.http.port}}/api/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email: emailCred, password: passwordCred })
-  })
-    .then(data => data.json())
-}
 
-interface ILogin { setToken: (token: IToken) => void }
-const Login:React.FC<ILogin> = ({ setToken }) => {
-  let navigate = useNavigate();
+  // axios
+  return fetch(
+    `http://${Settings.server.http.host}:${Settings.server.http.port}}/api/auth/login`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email: emailCred, password: passwordCred}),
+    }
+  ).then(data => data.json());
+};
+
+interface ILogin {
+  setToken: (token: IToken) => void;
+}
+const Login: React.FC<ILogin> = ({setToken}) => {
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const onLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const tokenData = await loginUser({ 
+    const tokenData = await loginUser({
       emailCred: email,
-      passwordCred: password
+      passwordCred: password,
     });
     setToken(tokenData);
     navigate('/');
-  }
+  };
 
   const handleRegister = () => {
-    navigate("/register");
-  }
+    navigate('/register');
+  };
 
   return (
     <div className="login-wrapper">
@@ -57,11 +64,13 @@ const Login:React.FC<ILogin> = ({ setToken }) => {
           <button type="submit">Submit</button>
         </div>
         <div>
-          <button type="button" onClick={handleRegister}>Register new account</button>
+          <button type="button" onClick={handleRegister}>
+            Register new account
+          </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default Login;

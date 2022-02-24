@@ -1,19 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
 
 const Logout = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogOut = () => {
-    localStorage.setItem("token", '');
+    localStorage.setItem('token', '');
     localStorage.clear();
-    navigate("/login");
-  }
+    navigate('/login');
+  };
 
   return (
     <button type="button" onClick={handleLogOut}>
       Logout
     </button>
   );
-}
+};
 
 export default Logout;

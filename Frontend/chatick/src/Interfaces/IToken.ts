@@ -1,1 +1,5 @@
-export default interface IToken { Value: string, ValidTo: Date, UID: string }
+export default interface IToken {
+  Value: string;
+  ValidTo: Date;
+  UID: string;
+}
