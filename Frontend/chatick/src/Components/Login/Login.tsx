@@ -3,6 +3,7 @@ import Settings from '../../Settings/Settings';
 import IToken from '../../Interfaces/IToken';
 import {useNavigate} from 'react-router-dom';
 import './style.css';
+import {Button, Container, Form} from 'react-bootstrap';
 
 interface ILoginUser {
   emailCred: string;
@@ -49,27 +50,35 @@ const Login: React.FC<ILogin> = ({setToken}) => {
   };
 
   return (
-    <div className="login-wrapper">
-      <h1>Please Log In</h1>
-      <form onSubmit={onLoginSubmit}>
-        <label>
-          <p>Email</p>
-          <input type="text" onChange={e => setEmail(e.target.value)} />
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)} />
-        </label>
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-        <div>
-          <button type="button" onClick={handleRegister}>
-            Register new account
-          </button>
-        </div>
-      </form>
-    </div>
+    <Container className="col-sm-8 col-lg-4 justify-content-md-center">
+      <Form onSubmit={onLoginSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            onChange={e => setEmail(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            onChange={e => setPassword(e.target.value)}
+          />
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+
+        <Button variant="link" type="button" onClick={handleRegister}>
+          Register new account
+        </Button>
+      </Form>
+    </Container>
   );
 };
 
