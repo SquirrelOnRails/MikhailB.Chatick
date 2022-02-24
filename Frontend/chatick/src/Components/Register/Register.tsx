@@ -15,7 +15,7 @@ const registerUser = async ({
   passwordCred,
 }: IRegisterUser) => {
   return fetch(
-    `http://${Settings.server.http.host}:${Settings.server.http.port}}/api/auth/Register`,
+    `https://${Settings.server.https.host}:${Settings.server.https.port}/api/auth/Register`,
     {
       method: 'POST',
       headers: {
