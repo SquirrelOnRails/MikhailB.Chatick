@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Settings from '../../Settings/Settings';
 import IToken from '../../Interfaces/IToken';
 import {useNavigate} from 'react-router-dom';
+import {Form, Button, Container} from 'react-bootstrap';
 
 interface IRegisterUser {
   usernameCred: string;
@@ -55,31 +56,47 @@ const Register: React.FC<IRegister> = ({setToken}) => {
   };
 
   return (
-    <div className="login-wrapper">
-      <h1>Create new account</h1>
-      <form onSubmit={onRegisterSubmit}>
-        <label>
-          <p>Username</p>
-          <input type="text" onChange={e => setUsername(e.target.value)} />
-        </label>
-        <label>
-          <p>Email</p>
-          <input type="text" onChange={e => setEmail(e.target.value)} />
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)} />
-        </label>
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-        <div>
-          <button type="button" onClick={handleLogin}>
-            I have an account
-          </button>
-        </div>
-      </form>
-    </div>
+    <Container className="col-sm-8 col-lg-4 justify-content-md-center">
+      <Form onSubmit={onRegisterSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter username"
+            onChange={e => setUsername(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            onChange={e => setEmail(e.target.value)}
+          />
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            onChange={e => setPassword(e.target.value)}
+          />
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+
+        <Button variant="link" type="button" onClick={handleLogin}>
+          I have an account
+        </Button>
+      </Form>
+    </Container>
   );
 };
 
