@@ -43,7 +43,7 @@ namespace MikhailB.Chatick.Api.Controllers
                 {
                     return BadRequest(new AuthResponse(){
                             Errors = new List<string>() {
-                                "Email уже используетс€"
+                                "Email already in use"
                             },
                             Success = false
                     });
@@ -68,9 +68,7 @@ namespace MikhailB.Chatick.Api.Controllers
             }
 
             return BadRequest(new AuthResponse(){
-                    Errors = new List<string>() {
-                        "Ќекоректный запрос"
-                    },
+                    Errors = ModelState.Values.SelectMany(v => v.Errors.ToList()).Select(e => e.ErrorMessage).ToList(),
                     Success = false
             });
         }
@@ -103,7 +101,7 @@ namespace MikhailB.Chatick.Api.Controllers
                     });
                 }
 
-                var jwtToken  =GenerateJwtToken(existingUser);
+                var jwtToken = GenerateJwtToken(existingUser);
 
                 return Ok(new AuthResponse() {
                     Success = true,

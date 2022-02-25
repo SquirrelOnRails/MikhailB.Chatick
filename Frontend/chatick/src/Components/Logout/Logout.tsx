@@ -1,3 +1,5 @@
+import React from 'react';
+import {Button} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 
 const Logout = () => {
@@ -10,9 +12,9 @@ const Logout = () => {
   };
 
   return (
-    <button type="button" onClick={handleLogOut}>
+    <Button variant="link" onClick={handleLogOut}>
       Logout
-    </button>
+    </Button>
   );
 };
 

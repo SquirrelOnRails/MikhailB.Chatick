@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MikhailB.Chatick.Api.Classes;
 using MikhailB.Chatick.Contracts.Dto;
-//using MikhailB.Chatick.Contracts.Interfaces;
 using MikhailB.Chatick.Contracts.Models;
 using Serilog;
 using System;
@@ -13,59 +16,46 @@ namespace MikhailB.Chatick.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ControllerBase
     {
-        /*private readonly ILogger _log = Log.ForContext<UserController>();
-        private readonly IUserService _userService;
-        private readonly ITokenService _tokenService;
+        private readonly ILogger _log = Log.ForContext<UserController>();
+        private readonly UserManager<AppUser> _userManager;
 
-        public UserController(IUserService userService, ITokenService tokenService)
+        public UserController(UserManager<AppUser> userManager)
         {
-            _userService = userService;
-            _tokenService = tokenService;
+            _userManager = userManager;
         }
 
-        /// <summary>
-        /// Авторизация пользователя
-        /// </summary>
-        /// <param name="credentials">Данные авторизации пользователя</param>
-        /// <returns>Обновлённый токен пользователя</returns>
-        public async Task<ActionResult> Login(LoginCredentialsDto credentials)
+        [HttpGet]
+        public async Task<ActionResult> GetUserInfo(string userId)
         {
-            // get user
-            User user = null;
             try
             {
-                user = _userService.SearchByEmail(credentials.Email);
+                var currentUser = await _userManager.FindByIdAsync(userId);
+
+                if (currentUser == null)
+                {
+                    return NotFound(new ApiResponse 
+                    {
+                        Errors = new List<string> { $"User with id {userId} not found" },
+                        Success = false
+                    });
+                }
+
+                return Ok(new AppUser 
+                {
+                    Id = currentUser.Id,
+                    FirstName = currentUser.FirstName,
+                    LastName = currentUser.LastName
+                });
             }
             catch (Exception e)
             {
-                var errorMsg = "Ошибка при авторизации";
-                _log.Error(e, errorMsg);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"{errorMsg}: {e.Message}");
+                _log.Error(e, "unknown error trying to get user info");
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
 
-            if (user == null)
-                return NotFound();
-            
-            if (user.Password != credentials.Password)
-                return Forbid();
-
-            // get token
-            try
-            {
-                var token = await _tokenService.RefreshUserToken(user.UID);
-                if (token != null)
-                    return Ok(token);
-                else
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось авторизовать пользователя, повторите запрос позже");
-            }
-            catch (Exception e)
-            {
-                var errMsg = "Ошибка при авторизации";
-                _log.Error(e, errMsg);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"{errMsg}: {e.Message}");
-            }
-        }*/
+        }
     }
 }

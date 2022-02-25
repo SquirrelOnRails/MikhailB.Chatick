@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import IToken from '../Interfaces/IToken';
 
-const useToken = () => {
+export const useToken = () => {
   const getToken = () => {
     const tokenString = localStorage.getItem('token');
     if (!tokenString) {
@@ -23,5 +23,3 @@ const useToken = () => {
     token,
   };
 };
-
-export default useToken;

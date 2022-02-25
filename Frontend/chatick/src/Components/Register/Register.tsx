@@ -27,13 +27,19 @@ const registerUser = async ({
         password: passwordCred,
       }),
     }
-  ).then(data => data.json());
+  )
+    .then(data => data.json())
+    .catch(err => {
+      alert(err);
+      // TODO
+      // setShowAlert(true, err.Errors[0])
+    });
 };
 
 interface IRegister {
   setToken: (token: IToken) => void;
 }
-const Register: React.FC<IRegister> = ({setToken}) => {
+export const Register: React.FC<IRegister> = ({setToken}) => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState<string>('');
@@ -99,5 +105,3 @@ const Register: React.FC<IRegister> = ({setToken}) => {
     </Container>
   );
 };
-
-export default Register;

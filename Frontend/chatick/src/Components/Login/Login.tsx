@@ -10,12 +10,8 @@ interface ILoginUser {
   passwordCred: string;
 }
 const loginUser = async ({emailCred, passwordCred}: ILoginUser) => {
-  //let token:IToken = { Value: "test123", ValidTo: new Date("2012.12.12"), UID: "FAKEUID" };
-  //return token;
-
-  // axios
   return fetch(
-    `http://${Settings.server.http.host}:${Settings.server.http.port}}/api/auth/login`,
+    `https://${Settings.server.https.host}:${Settings.server.https.port}/api/auth/login`,
     {
       method: 'POST',
       headers: {
@@ -23,13 +19,17 @@ const loginUser = async ({emailCred, passwordCred}: ILoginUser) => {
       },
       body: JSON.stringify({email: emailCred, password: passwordCred}),
     }
-  ).then(data => data.json());
+  )
+    .then(data => data.json())
+    .catch(err => {
+      alert(err); // TODO
+    });
 };
 
 interface ILogin {
   setToken: (token: IToken) => void;
 }
-const Login: React.FC<ILogin> = ({setToken}) => {
+export const Login: React.FC<ILogin> = ({setToken}) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>('');
@@ -81,5 +81,3 @@ const Login: React.FC<ILogin> = ({setToken}) => {
     </Container>
   );
 };
-
-export default Login;
