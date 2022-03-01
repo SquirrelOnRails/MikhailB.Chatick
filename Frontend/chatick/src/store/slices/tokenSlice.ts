@@ -1,11 +1,18 @@
 import {createSlice} from '@reduxjs/toolkit';
+import IToken from '../../Interfaces/IToken';
+
+const tokenStorageValue = localStorage.getItem('token');
+let tokenStorageObj = null;
+if (tokenStorageValue) {
+  tokenStorageObj = JSON.parse(tokenStorageValue);
+}
 
 const tokenSlice = createSlice({
   name: 'token',
   initialState: {
     token: {
-      value: '',
-      uid: '',
+      value: (tokenStorageObj as IToken)?.Value ?? '',
+      uid: (tokenStorageObj as IToken)?.UID ?? '',
     },
   },
   reducers: {

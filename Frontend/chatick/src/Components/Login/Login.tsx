@@ -20,6 +20,7 @@ const loginUser = async ({
   )
     .then(data => data.token) // TODO обработать отсутствие тела
     .catch(err => {
+      console.log(err);
       alert(err); // TODO обработать
     });
 };

@@ -15,12 +15,8 @@ export const App = () => {
 
   useEffect(() => {
     const authData = localStorage.getItem('token');
-
-    console.log('store', token);
-    console.log('local', authData);
-
     if (authData) {
-      dispatch(setToken(authData));
+      dispatch(setToken(JSON.parse(authData)));
     } else {
       dispatch(setToken(null));
     }

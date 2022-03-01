@@ -123,6 +123,7 @@ namespace MikhailB.Chatick.Api
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseCors();
 
             app.UseAuthentication();

@@ -23,8 +23,9 @@ const registerUser = async ({
       password: passwordCred,
     })
   )
-    .then(data => data.json())
+    .then(data => data.token)
     .catch(err => {
+      console.log(err);
       alert(err); // TODO обработать
     });
 };
