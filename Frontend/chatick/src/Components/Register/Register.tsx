@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import Settings from '../../Settings/Settings';
 import IToken from '../../Interfaces/IToken';
+import {POST} from '../../api/common/apiCaller';
 import {useNavigate} from 'react-router-dom';
 import {Form, Button, Container} from 'react-bootstrap';
+import {useDispatch} from 'react-redux';
 
 interface IRegisterUser {
   usernameCred: string;
@@ -13,26 +14,18 @@ const registerUser = async ({
   usernameCred,
   emailCred,
   passwordCred,
-}: IRegisterUser) => {
-  return fetch(
-    `https://${Settings.server.https.host}:${Settings.server.https.port}/api/auth/Register`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: usernameCred,
-        email: emailCred,
-        password: passwordCred,
-      }),
-    }
+}: IRegisterUser): Promise<IToken> => {
+  return POST(
+    'api/auth/Register',
+    JSON.stringify({
+      username: usernameCred,
+      email: emailCred,
+      password: passwordCred,
+    })
   )
     .then(data => data.json())
     .catch(err => {
-      alert(err);
-      // TODO
-      // setShowAlert(true, err.Errors[0])
+      alert(err); // TODO обработать
     });
 };
 
@@ -41,6 +34,7 @@ interface IRegister {
 }
 export const Register: React.FC<IRegister> = ({setToken}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -53,7 +47,8 @@ export const Register: React.FC<IRegister> = ({setToken}) => {
       emailCred: email,
       passwordCred: password,
     });
-    setToken(tokenData);
+    localStorage.setItem('token', JSON.stringify(tokenData));
+    dispatch(setToken(tokenData));
     navigate('/');
   };
 

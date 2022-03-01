@@ -1,28 +1,26 @@
 import React, {useState} from 'react';
-import Settings from '../../Settings/Settings';
 import IToken from '../../Interfaces/IToken';
 import {useNavigate} from 'react-router-dom';
+import {POST} from '../../api/common/apiCaller';
 import './style.css';
 import {Button, Container, Form} from 'react-bootstrap';
+import {useDispatch} from 'react-redux';
 
 interface ILoginUser {
   emailCred: string;
   passwordCred: string;
 }
-const loginUser = async ({emailCred, passwordCred}: ILoginUser) => {
-  return fetch(
-    `https://${Settings.server.https.host}:${Settings.server.https.port}/api/auth/login`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({email: emailCred, password: passwordCred}),
-    }
+const loginUser = async ({
+  emailCred,
+  passwordCred,
+}: ILoginUser): Promise<IToken> => {
+  return POST(
+    'api/auth/login',
+    JSON.stringify({email: emailCred, password: passwordCred})
   )
-    .then(data => data.json())
+    .then(data => data.token) // TODO обработать отсутствие тела
     .catch(err => {
-      alert(err); // TODO
+      alert(err); // TODO обработать
     });
 };
 
@@ -31,6 +29,7 @@ interface ILogin {
 }
 export const Login: React.FC<ILogin> = ({setToken}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -41,7 +40,8 @@ export const Login: React.FC<ILogin> = ({setToken}) => {
       emailCred: email,
       passwordCred: password,
     });
-    setToken(tokenData);
+    localStorage.setItem('token', JSON.stringify(tokenData));
+    dispatch(setToken(tokenData));
     navigate('/');
   };
 

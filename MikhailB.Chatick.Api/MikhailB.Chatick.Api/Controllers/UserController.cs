@@ -27,8 +27,10 @@ namespace MikhailB.Chatick.Api.Controllers
             _userManager = userManager;
         }
 
+        /// <param name="userId">Unique user id</param>
+        /// <returns>Common user info to display on a website</returns>
         [HttpGet]
-        public async Task<ActionResult> GetUserInfo(string userId)
+        public async Task<ActionResult> GetDisplayInfo(string userId)
         {
             try
             {
@@ -43,7 +45,7 @@ namespace MikhailB.Chatick.Api.Controllers
                     });
                 }
 
-                return Ok(new AppUser 
+                return Ok(new UserDisplayInfo
                 {
                     Id = currentUser.Id,
                     FirstName = currentUser.FirstName,
@@ -55,7 +57,6 @@ namespace MikhailB.Chatick.Api.Controllers
                 _log.Error(e, "unknown error trying to get user info");
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-
         }
     }
 }

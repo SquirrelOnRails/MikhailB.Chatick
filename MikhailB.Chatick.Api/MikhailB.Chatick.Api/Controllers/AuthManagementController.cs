@@ -33,43 +33,48 @@ namespace MikhailB.Chatick.Api.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody] RegistrationCredentialsDto user)
+        public async Task<IActionResult> Register([FromBody] RegistrationCredentialsDto userDto)
         {
             if(ModelState.IsValid)
             {
-                var existingUser = await _userManager.FindByEmailAsync(user.Email);
+                var existingUser = await _userManager.FindByEmailAsync(userDto.Email);
 
                 if(existingUser != null)
                 {
                     return BadRequest(new AuthResponse(){
-                            Errors = new List<string>() {
-                                "Email already in use"
-                            },
-                            Success = false
+                        Errors = new List<string>() {
+                            "This email has already been used"
+                        },
+                        Success = false
                     });
                 }
 
-                var newUser = new AppUser() { Email = user.Email, UserName = user.Username};
-                var isCreated = await _userManager.CreateAsync(newUser, user.Password);
+                var newUser = new AppUser() { Email = userDto.Email, UserName = userDto.Username };
+                var isCreated = await _userManager.CreateAsync(newUser, userDto.Password);
                 if(isCreated.Succeeded)
                 {
-                   var jwtToken =  GenerateJwtToken( newUser);
+                    var createdUser = await _userManager.FindByEmailAsync(newUser.Email);
+                    var token = new Token
+                    {
+                        Value = GenerateJwtToken(newUser),
+                        UID = createdUser.Id
+                    };
 
-                   return Ok(new AuthResponse() {
+                    return Ok(new AuthResponse() {
                        Success = true,
-                       Token = jwtToken
-                   });
+                       Token = token
+                    });
                 } else {
                     return BadRequest(new AuthResponse(){
-                            Errors = isCreated.Errors.Select(x => x.Description).ToList(),
-                            Success = false
+                        Errors = isCreated.Errors.Select(x => x.Description).ToList(),
+                        Success = false
                     });
                 }
             }
 
             return BadRequest(new AuthResponse(){
-                    Errors = ModelState.Values.SelectMany(v => v.Errors.ToList()).Select(e => e.ErrorMessage).ToList(),
-                    Success = false
+                Errors = ModelState.Values.SelectMany(v => v.Errors.ToList()).Select(e => e.ErrorMessage).ToList(),
+                Success = false
             });
         }
 
@@ -82,22 +87,22 @@ namespace MikhailB.Chatick.Api.Controllers
                 var existingUser = await _userManager.FindByEmailAsync(user.Email);
 
                 if(existingUser == null) {
-                        return BadRequest(new AuthResponse(){
-                            Errors = new List<string>() {
-                                "Invalid login request"
-                            },
-                            Success = false
+                    return BadRequest(new AuthResponse(){
+                        Errors = new List<string>() {
+                            "User with this email not found"
+                        },
+                        Success = false
                     });
                 }
 
                 var isCorrect = await _userManager.CheckPasswordAsync(existingUser, user.Password);
 
                 if(!isCorrect) {
-                      return BadRequest(new AuthResponse(){
-                            Errors = new List<string>() {
-                                "Invalid login request"
-                            },
-                            Success = false
+                    return BadRequest(new AuthResponse(){
+                        Errors = new List<string>() {
+                            "Email or password are wrong"
+                        },
+                        Success = false
                     });
                 }
 
@@ -105,15 +110,19 @@ namespace MikhailB.Chatick.Api.Controllers
 
                 return Ok(new AuthResponse() {
                     Success = true,
-                    Token = jwtToken
+                    Token = new Token
+                    {
+                        Value = jwtToken,
+                        UID = existingUser.Id
+                    }
                 });
             }
 
             return BadRequest(new AuthResponse(){
-                    Errors = new List<string>() {
-                        "Invalid payload"
-                    },
-                    Success = false
+                Errors = new List<string>() {
+                    "Invalid payload"
+                },
+                Success = false
             });
         }
 

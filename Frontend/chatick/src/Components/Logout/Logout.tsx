@@ -1,13 +1,16 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
+import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+import {setToken} from '../../store/slices/tokenSlice';
 
 const Logout = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    localStorage.setItem('token', '');
-    localStorage.clear();
+    dispatch(setToken(null));
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
