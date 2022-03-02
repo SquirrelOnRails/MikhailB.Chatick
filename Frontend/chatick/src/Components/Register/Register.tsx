@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import Settings from '../../Settings/Settings';
 import IToken from '../../Interfaces/IToken';
+import {POST} from '../../api/common/apiCaller';
 import {useNavigate} from 'react-router-dom';
 import {Form, Button, Container} from 'react-bootstrap';
+import {useDispatch} from 'react-redux';
 
 interface IRegisterUser {
   usernameCred: string;
@@ -13,28 +14,28 @@ const registerUser = async ({
   usernameCred,
   emailCred,
   passwordCred,
-}: IRegisterUser) => {
-  return fetch(
-    `https://${Settings.server.https.host}:${Settings.server.https.port}/api/auth/Register`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: usernameCred,
-        email: emailCred,
-        password: passwordCred,
-      }),
-    }
-  ).then(data => data.json());
+}: IRegisterUser): Promise<IToken> => {
+  return POST(
+    'api/auth/Register',
+    JSON.stringify({
+      username: usernameCred,
+      email: emailCred,
+      password: passwordCred,
+    })
+  )
+    .then(data => data.token)
+    .catch(err => {
+      console.log(err);
+      alert(err); // TODO обработать
+    });
 };
 
 interface IRegister {
   setToken: (token: IToken) => void;
 }
-const Register: React.FC<IRegister> = ({setToken}) => {
+export const Register: React.FC<IRegister> = ({setToken}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -47,8 +48,11 @@ const Register: React.FC<IRegister> = ({setToken}) => {
       emailCred: email,
       passwordCred: password,
     });
-    setToken(tokenData);
-    navigate('/');
+    if (tokenData?.value) {
+      localStorage.setItem('token', JSON.stringify(tokenData));
+      dispatch(setToken(tokenData));
+      navigate('/');
+    }
   };
 
   const handleLogin = () => {
@@ -99,5 +103,3 @@ const Register: React.FC<IRegister> = ({setToken}) => {
     </Container>
   );
 };
-
-export default Register;

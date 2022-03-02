@@ -14,6 +14,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MikhailB.Chatick.Contracts.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace MikhailB.Chatick.Api
 {
@@ -122,6 +123,7 @@ namespace MikhailB.Chatick.Api
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseCors();
 
             app.UseAuthentication();
@@ -133,6 +135,9 @@ namespace MikhailB.Chatick.Api
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapGet("ping", async (ctx) => { 
+                    await ctx.Response.WriteAsync("pong"); 
+                });
             });
         }
     }

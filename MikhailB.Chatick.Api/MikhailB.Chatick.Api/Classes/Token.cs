@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace MikhailB.Chatick.Api.Classes
 {
-    public class AuthResponse : ApiResponse
+    public class Token
     {
-        public Token Token { get; set; }
+        public string Value { get; set; }
+        public string UID { get; set; }
     }
 }
