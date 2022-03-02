@@ -48,9 +48,11 @@ export const Register: React.FC<IRegister> = ({setToken}) => {
       emailCred: email,
       passwordCred: password,
     });
-    localStorage.setItem('token', JSON.stringify(tokenData));
-    dispatch(setToken(tokenData));
-    navigate('/');
+    if (tokenData?.value) {
+      localStorage.setItem('token', JSON.stringify(tokenData));
+      dispatch(setToken(tokenData));
+      navigate('/');
+    }
   };
 
   const handleLogin = () => {

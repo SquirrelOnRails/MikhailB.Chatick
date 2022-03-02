@@ -3,7 +3,7 @@ import IToken from '../../Interfaces/IToken';
 
 const tokenStorageValue = localStorage.getItem('token');
 let tokenStorageObj = null;
-if (tokenStorageValue) {
+if (tokenStorageValue && tokenStorageValue !== 'undefined') {
   tokenStorageObj = JSON.parse(tokenStorageValue);
 }
 
@@ -11,8 +11,8 @@ const tokenSlice = createSlice({
   name: 'token',
   initialState: {
     token: {
-      value: (tokenStorageObj as IToken)?.Value ?? '',
-      uid: (tokenStorageObj as IToken)?.UID ?? '',
+      value: (tokenStorageObj as IToken)?.value ?? '',
+      uid: (tokenStorageObj as IToken)?.uid ?? '',
     },
   },
   reducers: {

@@ -29,8 +29,8 @@ namespace MikhailB.Chatick.Api.Controllers
 
         /// <param name="userId">Unique user id</param>
         /// <returns>Common user info to display on a website</returns>
-        [HttpGet]
-        public async Task<ActionResult> GetDisplayInfo(string userId)
+        [HttpGet("GetDisplayInfo")]
+        public async Task<ActionResult> GetDisplayInfo([FromQuery] string userId)
         {
             try
             {

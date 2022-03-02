@@ -7,14 +7,20 @@ const enum Methods {
   PUT = 'put',
   DELETE = 'delete',
 }
-
 interface IRequestParams {
   method: Methods;
   url: string;
   params: object;
   data: object;
 }
+
 const performRequest = async (args: IRequestParams) => {
+  const tokenStr = localStorage.getItem('token');
+  let token = null;
+  if (tokenStr && tokenStr !== 'undefined') {
+    token = JSON.parse(tokenStr);
+  }
+
   let response;
   try {
     response = await axios.request({
@@ -28,6 +34,7 @@ const performRequest = async (args: IRequestParams) => {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE',
+        Authorization: token?.value ? `Bearer ${token.value}` : '',
       },
     });
     return response.data;
